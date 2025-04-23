@@ -128,7 +128,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim 
     wget
     git
     telegram-desktop
@@ -139,6 +138,8 @@
     htop
     neofetch
     gnome-terminal
+    python3
+    vscode
   ];
 
   # Fonts for better text rendering
