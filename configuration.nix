@@ -124,6 +124,13 @@
     dates = "monthly"; # Run garbage collection once a month
     options = "--delete-older-than 30d"; # Delete generations older than 30 days
   };
+  
+  #Steam
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Для Steam Remote Play
+    dedicatedServer.openFirewall = true; # Для серверов
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -140,6 +147,7 @@
     gnome-terminal
     python3
     vscode
+    lutris
   ];
 
   # Fonts for better text rendering
