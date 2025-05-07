@@ -17,6 +17,12 @@
   # NVIDIA optimization: Enable DRM kernel mode setting for better graphics performance
   boot.kernelParams = [ "nvidia-drm.modeset=1" ];
 
+  # Enable KVM for AMD processors
+  boot.kernelModules = [ "kvm-amd" ]; # Load KVM module for AMD CPUs
+  boot.extraModprobeConfig = ''
+    options kvm-amd nested=1 # Enable nested virtualization for AMD
+  '';
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -98,7 +104,7 @@
   users.users.agegon = {
     isNormalUser = true;
     description = "Agegon";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ]; # Add libvirtd group for virtualization management
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -132,6 +138,20 @@
     dedicatedServer.openFirewall = true; # Для серверов
   };
 
+  # Enable libvirt and QEMU/KVM for virtualization
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm; # Use QEMU with KVM support
+      runAsRoot = true; # Run QEMU as root for full hardware access
+      swtpm.enable = true; # Enable TPM emulation
+      ovmf.enable = true; # Enable OVMF for UEFI support
+    };
+  };
+
+  # Enable SPICE for USB redirection in VMs
+  virtualisation.spiceUSBRedirection.enable = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -148,6 +168,12 @@
     python3
     vscode
     lutris
+    virt-manager # GUI for managing virtual machines
+    libvirt # Library for virtualization
+    qemu # QEMU emulator
+    qemu_kvm # KVM support for QEMU
+    spice # SPICE protocol for VM display
+    spice-gtk # SPICE client
   ];
 
   # Fonts for better text rendering
@@ -165,7 +191,6 @@
 
   # Enable firmware updates
   hardware.enableAllFirmware = true;
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
