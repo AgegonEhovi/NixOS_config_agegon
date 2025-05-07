@@ -15,12 +15,13 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # NVIDIA optimization: Enable DRM kernel mode setting for better graphics performance
-  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
+  boot.kernelParams = [ "nvidia-drm.modeset=1" "amd_iommu=on" ]; # Enable IOMMU for GPU passthrough
 
   # Enable KVM for AMD processors
-  boot.kernelModules = [ "kvm-amd" ]; # Load KVM module for AMD CPUs
+  boot.kernelModules = [ "kvm-amd" "kvm" "vfio" "vfio_iommu_type1" "vfio_pci" ]; # Load KVM and VFIO modules for virtualization
   boot.extraModprobeConfig = ''
-    options kvm-amd nested=1 # Enable nested virtualization for AMD
+    options kvm-amd nested=1
+    options kvm ignore_msrs=1
   '';
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -104,7 +105,7 @@
   users.users.agegon = {
     isNormalUser = true;
     description = "Agegon";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" ]; # Add libvirtd group for virtualization management
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "kvm" ]; # Add libvirtd and kvm groups for virtualization
     packages = with pkgs; [
     #  thunderbird
     ];
