@@ -159,6 +159,7 @@
     wget
     git
     telegram-desktop
+    helvum
     kitty
     hiddify-app
     keepassxc
