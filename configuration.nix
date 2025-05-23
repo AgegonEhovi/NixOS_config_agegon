@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:
 
 {
@@ -105,7 +101,7 @@
   users.users.agegon = {
     isNormalUser = true;
     description = "Agegon";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "kvm" ]; # Add libvirtd and kvm groups for virtualization
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "kvm" ];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -118,9 +114,6 @@
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
-
-  # Install firefox.
-  programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -169,14 +162,12 @@
     gnome-terminal
     python3
     vscode
-    lutris
-    virt-manager # GUI for managing virtual machines
-    libvirt # Library for virtualization
-    qemu # QEMU emulator
-    qemu_kvm # KVM support for QEMU
-    spice # SPICE protocol for VM display
-    spice-gtk # SPICE client
-    audacity
+    virt-manager
+    libvirt
+    qemu 
+    qemu_kvm
+    spice 
+    spice-gtk
   ];
 
   # Fonts for better text rendering
