@@ -176,6 +176,7 @@
     qemu_kvm # KVM support for QEMU
     spice # SPICE protocol for VM display
     spice-gtk # SPICE client
+    audacity
   ];
 
   # Fonts for better text rendering
