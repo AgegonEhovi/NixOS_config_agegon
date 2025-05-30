@@ -168,6 +168,7 @@
     qemu_kvm
     spice 
     spice-gtk
+    firefox
   ];
 
   # Fonts for better text rendering
