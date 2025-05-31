@@ -23,16 +23,16 @@
       
       modules = [
         # Твой основной системный конфиг
-        ./configuration.nix
+        ./configuration.nix,
         
         # Включаем модуль nix-flatpak
-        nix-flatpak.nixosModules.nix-flatpak,
+        nix-flatpak.nixosModules.nix-flatpak, # <--- Убери эту запятую, если home-manager.nixosModules.home-manager - ПОСЛЕДНИЙ ЭЛЕМЕНТ
         
         # Включаем Home Manager для пользователя 'agegon' (замени на свое имя пользователя)
         home-manager.nixosModules.home-manager {
-          home-manager.useGlobalPkgs = true; # Home Manager будет видеть системные пакеты
-          home-manager.useUserPackages = true; # Home Manager будет управлять пользовательскими пакетами
-          home-manager.users.agegon = import ./home.nix; # Подключаем файл home.nix для пользователя
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.agegon = import ./home.nix;
         }
       ];
     };
