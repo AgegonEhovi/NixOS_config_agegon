@@ -124,13 +124,6 @@
     dates = "monthly"; # Run garbage collection once a month
     options = "--delete-older-than 30d"; # Delete generations older than 30 days
   };
-  
-  #Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Для Steam Remote Play
-    dedicatedServer.openFirewall = true; # Для серверов
-  };
 
   # Enable libvirt and QEMU/KVM for virtualization
   virtualisation.libvirtd = {
@@ -169,6 +162,7 @@
     spice 
     spice-gtk
     firefox
+    lf
   ];
 
   # Fonts for better text rendering
