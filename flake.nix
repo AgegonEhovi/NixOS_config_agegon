@@ -26,7 +26,7 @@
         ./configuration.nix
         
         # Включаем модуль nix-flatpak
-        nix-flatpak.nixosModules.nix-flatpak;
+        nix-flatpak.nixosModules.nix-flatpak,
         
         # Включаем Home Manager для пользователя 'agegon' (замени на свое имя пользователя)
         home-manager.nixosModules.home-manager {
