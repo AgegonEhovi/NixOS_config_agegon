@@ -1,3 +1,4 @@
+# /etc/nixos/configuration.nix
 { config, pkgs, ... }:
 
 {
@@ -102,9 +103,8 @@
     isNormalUser = true;
     description = "Agegon";
     extraGroups = [ "networkmanager" "wheel" "libvirtd" "kvm" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+    # Теперь пакеты для пользователя будут управляться Home Manager в home.nix
+    packages = []; 
   };
 
   # Enable automatic login for the user.
@@ -122,7 +122,7 @@
   nix.gc = {
     automatic = true;
     dates = "monthly"; # Run garbage collection once a month
-    options = "--delete-older-than 30d"; # Delete generations older than 30 days
+    options = "--delete-older-than 10d"; # Delete generations older than 30 days
   };
 
   # Enable libvirt and QEMU/KVM for virtualization
@@ -139,30 +139,25 @@
   # Enable SPICE for USB redirection in VMs
   virtualisation.spiceUSBRedirection.enable = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # List packages installed in system profile. 
+  # Здесь оставляем только глобально необходимые пакеты.
+  # Пользовательские программы переносим в home.nix
   environment.systemPackages = with pkgs; [
     wget
     git
-    telegram-desktop
-    helvum
-    kitty
-    hiddify-app
-    keepassxc
-    brave     
     htop
     neofetch
     gnome-terminal
     python3
-    vscode
     virt-manager
     libvirt
     qemu 
     qemu_kvm
     spice 
     spice-gtk
-    firefox
     lf
+    podman
+    distrobox
   ];
 
   # Fonts for better text rendering
@@ -180,6 +175,26 @@
 
   # Enable firmware updates
   hardware.enableAllFirmware = true;
+
+  # ----- Flatpak Configuration (управляется nix-flatpak) -----
+  services.flatpak.enable = true;
+  
+  # Это для nix-flatpak, указываем какие Flatpak приложения установить декларативно
+  services.flatpak.packages = [
+    "com.valvesoftware.Steam" 
+  ];
+
+  # Настройки графики для Flatpak приложений (очень важны)
+  hardware.opengl.driSupport = true;
+  hardware.opengl.driSupport32Bit = true;
+  
+  hardware.opengl.extraPackages = with pkgs; [
+    nvidia_x11.drivers
+  ];
+  hardware.opengl.extraPackages32 = with pkgs; [
+    nvidia_x11.drivers # 32-битные драйверы NVIDIA
+  ];
+  # -------------------------------------------
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
