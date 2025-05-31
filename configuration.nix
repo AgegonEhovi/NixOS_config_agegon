@@ -2,7 +2,7 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       ./hardware-configuration.nix
     ];
 
@@ -20,7 +20,7 @@
     options kvm ignore_msrs=1
   '';
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "nixos";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -50,6 +50,7 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+
   # Add NVIDIA driver support
   services.xserver.videoDrivers = [ "nvidia" ];
   # Optional: Force Wayland (GNOME default), but NVIDIA support might be shaky. Set to false for X11 if lag persists.
@@ -75,9 +76,6 @@
     variant = "";
   };
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -93,6 +91,9 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
+
+  # Enable Flatpak
+  services.flatpak.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -117,14 +118,14 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  
+
   # Automatic garbage collection
   nix.gc = {
     automatic = true;
-    dates = "monthly"; # Run garbage collection once a month
-    options = "--delete-older-than 30d"; # Delete generations older than 30 days
+    dates = "weekly";  # Run garbage collection weekly
+    options = "--delete-older-than 10d";  # Delete generations older than 10 days
   };
-  
+
   #Steam
   programs.steam = {
     enable = true;
@@ -141,6 +142,12 @@
       swtpm.enable = true; # Enable TPM emulation
       ovmf.enable = true; # Enable OVMF for UEFI support
     };
+  };
+
+  # Enable Podman
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;  # Опционально: эмулирует команды Docker
   };
 
   # Enable SPICE for USB redirection in VMs
@@ -169,6 +176,8 @@
     spice 
     spice-gtk
     firefox
+    lf
+    distrobox
   ];
 
   # Fonts for better text rendering
@@ -182,7 +191,6 @@
   # USB automount for convenience in GNOME
   services.gvfs.enable = true;
   services.udisks2.enable = true;
-  
 
   # Enable firmware updates
   hardware.enableAllFirmware = true;
