@@ -147,7 +147,7 @@
   # Enable Podman
   virtualisation.podman = {
     enable = true;
-    dockerCompat = true;  # Опционально: эмулирует команды Docker
+    dockerCompat = true; 
   };
 
   # Enable SPICE for USB redirection in VMs
@@ -178,6 +178,8 @@
     firefox
     lf
     distrobox
+    anki-bin
+    obsidian
   ];
 
   # Fonts for better text rendering
