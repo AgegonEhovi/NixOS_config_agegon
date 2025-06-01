@@ -95,6 +95,10 @@
   # Enable Flatpak
   services.flatpak.enable = true;
 
+  # Добавляем Flathub через system-wide конфигурацию
+  system.activationScripts.flatpak-repo = ''
+    ${pkgs.flatpak}/bin/flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo'';
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
